@@ -10,7 +10,13 @@ export const PlanetCard = ({ planet }) => {
 
     return (
         <div className="card m-2" style={{ minWidth: "18rem" }}>
-            <img src={imageUrl} className="card-img-top" alt={planet.name} />
+            <img
+                src={`https://starwars-visualguide.com/assets/img/characters/${planet.uid}.jpg`}
+                alt={planet.name}
+                className="card-img-top"
+                onError={(e) => { e.target.src = "https://starwars-visualguide.com/assets/img/big-placeholder.jpg"; }}
+            />
+
             <div className="card-body">
                 <h5 className="card-title">{planet.name}</h5>
                 <div className="d-flex justify-content-between">
