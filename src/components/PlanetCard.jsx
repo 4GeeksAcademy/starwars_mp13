@@ -14,7 +14,7 @@ export const PlanetCard = ({ planet }) => {
             <div className="card-body">
                 <h5 className="card-title">{planet.name}</h5>
                 <div className="d-flex justify-content-between">
-                    <Link to={`/planet/${id}`} className="btn btn-outline-primary">Más info</Link>
+                    <Link to={`/single/planets/${planet.uid}`} className="btn btn-outline-primary">Más info</Link>
                     <button
                         className="btn btn-outline-warning"
                         onClick={() => actions.toggleFavorite(planet.name)}

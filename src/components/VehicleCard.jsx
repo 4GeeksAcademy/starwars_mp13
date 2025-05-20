@@ -14,7 +14,7 @@ export const VehicleCard = ({ vehicle }) => {
             <div className="card-body">
                 <h5 className="card-title">{vehicle.name}</h5>
                 <div className="d-flex justify-content-between">
-                    <Link to={`/vehicle/${id}`} className="btn btn-outline-primary">Más info</Link>
+                    <Link to={`/single/vehicles/${vehicle.uid}`} className="btn btn-outline-primary">Más info</Link>
                     <button
                         className="btn btn-outline-warning"
                         onClick={() => actions.toggleFavorite(vehicle.name)}

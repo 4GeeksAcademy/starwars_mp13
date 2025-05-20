@@ -1,43 +1,39 @@
-import React, { useContext, useEffect, useState } from "react";
+// src/pages/Single.jsx
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Context } from "../store.jsx";
 
 const Single = () => {
-    const { theid } = useParams();
-    const { store } = useContext(Context);
-    const [item, setItem] = useState(null);
-    const [type, setType] = useState(null);
+    const { type, id } = useParams();
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const allData = [
-            { data: store.characters, type: "character" },
-            { data: store.planets, type: "planet" },
-            { data: store.vehicles, type: "vehicle" }
-        ];
-
-        for (const { data, type } of allData) {
-            const found = data.find(i => i.uid === theid);
-            if (found) {
-                setItem(found);
-                setType(type);
-                break;
+        const fetchData = async () => {
+            try {
+                const res = await fetch(`https://www.swapi.tech/api/${type}/${id}`);
+                const json = await res.json();
+                setData(json.result);
+            } catch (err) {
+                console.error("Error al cargar detalle:", err);
+            } finally {
+                setLoading(false);
             }
-        }
-    }, [store]);
+        };
 
-    if (!item) return <div className="text-center mt-5">Cargando...</div>;
+        fetchData();
+    }, [type, id]);
 
-    const imageMap = {
-        character: `https://starwars-visualguide.com/assets/img/characters/${item.uid}.jpg`,
-        planet: `https://starwars-visualguide.com/assets/img/planets/${item.uid}.jpg`,
-        vehicle: `https://starwars-visualguide.com/assets/img/vehicles/${item.uid}.jpg`
-    };
+    if (loading) return <p>Cargando...</p>;
+    if (!data) return <p>No se encontró información</p>;
 
     return (
-        <div className="container mt-5 text-center">
-            <img src={imageMap[type]} className="img-fluid mb-4" style={{ maxHeight: "300px" }} />
-            <h1>{item.name}</h1>
-            <p className="text-muted">UID: {item.uid}</p>
+        <div className="container mt-4">
+            <h1>{data.properties.name || data.properties.title}</h1>
+            <ul>
+                {Object.entries(data.properties).map(([key, value]) => (
+                    <li key={key}><strong>{key}:</strong> {value}</li>
+                ))}
+            </ul>
         </div>
     );
 };
